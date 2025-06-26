@@ -41,5 +41,61 @@ class MedicoController {
             echo "Erro: Início não encontrado em $formPath";
         }
     }
+    public function mostrarLogin(){
+        $formPath = dirname(__DIR__, 2) . '/view/medico/login.php';
+        if (file_exists($formPath)) {
+            include_once $formPath;
+        } else {
+            echo "Erro: Login não encontrado em $formPath";
+        }
+    }
+    public function entrar() {
+        $data = json_decode(file_get_contents("php://input"));
+        if (!$data) $data = (object)$_POST;
+
+        $medico = new \Htdocs\Src\Models\Entity\Medico(
+            $data->id_usuario,
+            $data->crm_medico
+        );
+        echo json_encode($this->service->entrar($medico));
+    }
+    public function mostrarConta(){
+        $formPath = dirname(__DIR__, 2) . '/view/medico/conta.php';
+        if (file_exists($formPath)) {
+            include_once $formPath;
+        } else {
+            echo "Erro: Conta não encontrada em $formPath";
+        }
+    }
+    public function atualizarConta() {
+        $data = json_decode(file_get_contents("php://input"));
+        if (!$data) $data = (object)$_POST;
+
+        $medico = new \Htdocs\Src\Models\Entity\Medico(
+            $data->id_usuario,
+            $data->crm_medico
+        );
+        echo json_encode($this->service->atualizarConta($medico));
+    }
+    public function deletarConta() {
+        $data = json_decode(file_get_contents("php://input"));
+        if (!$data) $data = (object)$_POST;
+
+        $medico = new \Htdocs\Src\Models\Entity\Medico(
+            $data->id_usuario,
+            $data->crm_medico
+        );
+        echo json_encode($this->service->deletarConta($medico));
+    }
+    public function sairConta() {
+        $data = json_decode(file_get_contents("php://input"));
+        if (!$data) $data = (object)$_POST;
+
+        $medico = new \Htdocs\Src\Models\Entity\Medico(
+            $data->id_usuario,
+            $data->crm_medico
+        );
+        echo json_encode($this->service->sairConta($medico));
+    }
 }
 ?>

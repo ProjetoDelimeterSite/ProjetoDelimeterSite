@@ -3,7 +3,7 @@
 namespace Htdocs\Src\Models\Repository;
 
 use Htdocs\Src\Config\Connection;
-use Htdocs\Src\Models\Entity\Medico;
+use Htdocs\Src\Models\Entity\Usuario;
 use PDO;
 
 class MedicoRepository {
@@ -22,19 +22,21 @@ class MedicoRepository {
         }
     }
 
-    public function save(Medico $medico) {
-        $sql = "INSERT INTO medico (id_usuario, crm_medico) VALUES (:id_usuario, :crm_medico)";
+    public function save(Usuario $usuario) {
+        $sql = "INSERT INTO medico (nome_usuario, email_usuario, senha_usuario) VALUES (:nome, :email, :senha)";
         $stmt = $this->conn->prepare($sql);
-        $id_usuario = $medico->getIdUsuario();
-        $crm_medico = $medico->getCrmMedico();
-        $stmt->bindParam(':id_usuario', $id_usuario);
-        $stmt->bindParam(':crm_medico', $crm_medico);
+        $nome = $usuario->getNome();
+        $email = $usuario->getEmail();
+        $senha = $usuario->getSenha();
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':senha', $senha);
         $stmt->execute();
         return $this->conn->lastInsertId();
     }
 
     public function findById($id) {
-        $sql = "SELECT * FROM medico WHERE id_medico = :id";
+        $sql = "SELECT * FROM medico WHERE id_usuario = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -48,23 +50,42 @@ class MedicoRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function update(Medico $medico) {
-        $sql = "UPDATE medico SET id_usuario = :id_usuario, crm_medico = :crm_medico WHERE id_medico = :id";
-        $stmt = $this->conn->prepare($sql);
-        $id_usuario = $medico->getIdUsuario();
-        $crm_medico = $medico->getCrmMedico();
-        $id = $medico->getIdMedico();
-        $stmt->bindParam(':id_usuario', $id_usuario);
-        $stmt->bindParam(':crm_medico', $crm_medico);
-        $stmt->bindParam(':id', $id);
+    public function update(Usuario $usuario) {
+        $nome = $usuario->getNome();
+        $email = $usuario->getEmail();
+        $senha = $usuario->getSenha();
+        $id = $usuario->getId();
+
+        if ($senha) {
+            $sql = "UPDATE medico SET nome_usuario = :nome, email_usuario = :email, senha_usuario = :senha WHERE id_usuario = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':senha', $senha);
+            $stmt->bindParam(':id', $id);
+        } else {
+            $sql = "UPDATE medico SET nome_usuario = :nome, email_usuario = :email WHERE id_usuario = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':id', $id);
+        }
         $stmt->execute();
     }
 
     public function delete($id) {
-        $sql = "DELETE FROM medico WHERE id_medico = :id";
+        $sql = "DELETE FROM medico WHERE id_usuario = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
+    }
+
+    public function findByEmail($email) {
+        $sql = "SELECT * FROM medico WHERE email_usuario = :email";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 ?>

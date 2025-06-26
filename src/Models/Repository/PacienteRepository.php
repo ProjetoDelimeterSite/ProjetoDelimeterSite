@@ -80,5 +80,13 @@ class PacienteRepository {
         $stmt->bindParam(':id', $id);
         $stmt->execute();
     }
+
+    public function findByEmail($email) {
+        $sql = "SELECT * FROM paciente WHERE email_usuario = :email";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>
