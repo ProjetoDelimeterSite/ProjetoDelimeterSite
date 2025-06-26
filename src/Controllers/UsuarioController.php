@@ -26,7 +26,16 @@ class UsuarioController {
             $data->email_usuario,
             password_hash($data->senha_usuario, PASSWORD_DEFAULT)
         );
-        echo json_encode($this->service->criar($usuario));
+        $this->service->criar($usuario);
+
+        // Se for requisição POST tradicional (formulário), redireciona para login
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header('Location: /usuario/login');
+            exit;
+        }
+
+        // Caso contrário, retorna JSON (para AJAX)
+        echo json_encode(['success' => true]);
     }
 
     public function mostrar() {
@@ -47,6 +56,47 @@ class UsuarioController {
             include_once $formPath;
         } else {
             echo "Erro: Início não encontrado em $formPath";
+        }
+    }
+    public function mostrarLogin(){
+        $formPath = dirname(__DIR__, 2) . '/view/usuario/login.php';
+        if (file_exists($formPath)) {
+            include_once $formPath;
+        } else {
+            echo "Erro: Login não encontrado em $formPath";
+        }
+    }
+    public function entrar() {
+        $data = json_decode(file_get_contents("php://input"));
+        if (!$data) $data = (object)$_POST;
+
+        // Verifica se os campos esperados estão presentes
+        if (!isset($data->email) || !isset($data->senha)) {
+            echo json_encode(['error' => 'Dados incompletos.']);
+            return;
+        }
+
+        $usuario = $this->service->login($data->email, $data->senha);
+
+        if ($usuario) {
+            // Define o tipo do usuário na sessão
+            if (is_array($usuario)) {
+                $_SESSION['usuario'] = $usuario;
+                $_SESSION['usuario']['tipo'] = 'usuario';
+            } else {
+                $_SESSION['usuario'] = (array)$usuario;
+                $_SESSION['usuario']['tipo'] = 'usuario';
+            }
+            // Se for requisição POST tradicional (formulário), redireciona para a página inicial
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                header('Location: /');
+                exit;
+            }
+
+            // Caso contrário, retorna JSON (para AJAX)
+            echo json_encode(['success' => true, 'usuario' => $_SESSION['usuario']]);
+        } else {
+            echo json_encode(['error' => 'Credenciais inválidas.']);
         }
     }
 }
