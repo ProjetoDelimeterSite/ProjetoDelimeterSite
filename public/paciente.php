@@ -23,9 +23,5 @@ $route->add('POST', '/conta/atualizar', [$pacienteController, 'atualizarConta'])
 $route->add('POST', '/conta/deletar', [$pacienteController, 'deletarConta']);
 $route->add('GET', '/conta/sair', [$pacienteController, 'sairConta']);
 
-if($_SERVER['REQUEST_URI'] === '/delimeter/sobre') {
-    include_once __DIR__ . '/delimeter.php';
-} elseif($_SERVER['REQUEST_URI'] === '/delimeter/calculo') {
-    include_once __DIR__ . '/delimeter.php';
-}
+include_once __DIR__ . '/especialPages.php';
 ?>

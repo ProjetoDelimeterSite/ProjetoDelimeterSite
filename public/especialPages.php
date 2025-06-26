@@ -22,6 +22,14 @@ if ($_SERVER['REQUEST_URI'] === '/delimeter/sobre') {
     $nutricionistaController->mostrarHome();
 } elseif ($_SERVER['REQUEST_URI'] === '/medico') {
     $medicoController->mostrarHome();
+} elseif ($_SERVER['REQUEST_URI'] === '/usuario/cadastro') {
+    $usuarioController->mostrarFormulario();
+} elseif ($_SERVER['REQUEST_URI'] === '/usuario/login') {
+    $usuarioController->mostrarLogin();
+} elseif ($_SERVER['REQUEST_URI'] === '/api/usuario') {
+    $usuarioController->criar();
+} elseif ($_SERVER['REQUEST_URI'] === '/login/usuario') {
+    $usuarioController->entrar();
 }
 
 ?>
