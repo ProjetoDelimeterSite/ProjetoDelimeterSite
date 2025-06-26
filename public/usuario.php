@@ -21,4 +21,9 @@ $route->add('GET', '/usuario/login', [$usuarioController, 'mostrarLogin']);
 
 // $route->add('GET', '/usuario/editar', [$usuarioController, 'mostrarFormularioEditar']);
 // $route->add('POST', '/usuario/editar', [$usuarioController, 'editar']);
+if($_SERVER['REQUEST_URI'] === '/delimeter/sobre') {
+    include_once __DIR__ . '/delimeter.php';
+} elseif($_SERVER['REQUEST_URI'] === '/delimeter/calculo') {
+    include_once __DIR__ . '/delimeter.php';
+}
 ?>
