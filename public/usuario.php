@@ -17,10 +17,16 @@ $route->add('GET', '/usuario/cadastro', [$usuarioController, 'mostrarFormulario'
 
 $route->add('POST', '/login/usuario', [$usuarioController, 'entrar']);
 $route->add('GET', '/usuario/login', [$usuarioController, 'mostrarLogin']);
-// $route->add('GET', '/usuario/logout', [$usuarioController, 'logout']);
 
-// $route->add('GET', '/usuario/editar', [$usuarioController, 'mostrarFormularioEditar']);
-// $route->add('POST', '/usuario/editar', [$usuarioController, 'editar']);
+$route->add('GET', '/conta', [$usuarioController, 'mostrarConta']);
+$route->add('POST', '/conta/atualizar', [$usuarioController, 'atualizarConta']);
+
+// $route->add('GET', '/conta/editar', [$usuarioController, 'mostrarFormularioEdicao']);
+// $route->add('GET', '/conta/editar/senha', [$usuarioController, 'mostrarFormularioEdicaoSenha']);
+
+$route->add('POST', '/conta/deletar', [$usuarioController, 'deletarConta']);
+$route->add('GET', '/conta/sair', [$usuarioController, 'sairConta']);
+
 if($_SERVER['REQUEST_URI'] === '/delimeter/sobre') {
     include_once __DIR__ . '/delimeter.php';
 } elseif($_SERVER['REQUEST_URI'] === '/delimeter/calculo') {

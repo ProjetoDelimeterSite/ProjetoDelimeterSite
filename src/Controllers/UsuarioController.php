@@ -99,5 +99,63 @@ class UsuarioController {
             echo json_encode(['error' => 'Credenciais inválidas.']);
         }
     }
+
+    public function mostrarConta() {
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: /usuario/login');
+            exit;
+        }
+        $formPath = dirname(__DIR__, 2) . '/view/usuario/conta.php';
+        if (file_exists($formPath)) {
+            include_once $formPath;
+        } else {
+            echo "Erro: Conta não encontrada em $formPath";
+        }
+    }
+
+    public function atualizarConta() {
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: /usuario/login');
+            exit;
+        }
+        $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        $nome = $_POST['nome_usuario'] ?? '';
+        $email = $_POST['email_usuario'] ?? '';
+        $senha = $_POST['senha_usuario'] ?? null;
+
+        if ($id && $nome && $email) {
+            $usuario = new \Htdocs\Src\Models\Entity\Usuario($id, $nome, $email, $senha ? password_hash($senha, PASSWORD_DEFAULT) : null);
+            $this->service->getUsuarioRepository()->update($usuario);
+            // Atualiza sessão
+            $_SESSION['usuario']['nome_usuario'] = $nome;
+            $_SESSION['usuario']['email_usuario'] = $email;
+            header('Location: /conta?atualizado=1');
+            exit;
+        }
+        header('Location: /conta?erro=1');
+        exit;
+    }
+
+    public function deletarConta() {
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: /usuario/login');
+            exit;
+        }
+        $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        if ($id) {
+            $this->service->getUsuarioRepository()->delete($id);
+            session_destroy();
+            header('Location: /');
+            exit;
+        }
+        header('Location: /conta?erro=1');
+        exit;
+    }
+
+    public function sairConta() {
+        session_destroy();
+        header('Location: /');
+        exit;
+    }
 }
 ?>

@@ -51,16 +51,25 @@ class UsuarioRepository {
     }
 
     public function update(Usuario $usuario) {
-        $sql = "UPDATE usuario SET nome_usuario = :nome, email_usuario = :email, senha_usuario = :senha WHERE id_usuario = :id";
-        $stmt = $this->conn->prepare($sql);
         $nome = $usuario->getNome();
         $email = $usuario->getEmail();
         $senha = $usuario->getSenha();
         $id = $usuario->getId();
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':senha', $senha);
-        $stmt->bindParam(':id', $id);
+
+        if ($senha) {
+            $sql = "UPDATE usuario SET nome_usuario = :nome, email_usuario = :email, senha_usuario = :senha WHERE id_usuario = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':senha', $senha);
+            $stmt->bindParam(':id', $id);
+        } else {
+            $sql = "UPDATE usuario SET nome_usuario = :nome, email_usuario = :email WHERE id_usuario = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':id', $id);
+        }
         $stmt->execute();
     }
 

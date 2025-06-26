@@ -11,6 +11,10 @@ class UsuarioService {
         $this->usuarioRepository = $usuarioRepository;
     }
 
+    public function getUsuarioRepository() {
+        return $this->usuarioRepository;
+    }
+
     public function criar(Usuario $usuario) {
         return $this->usuarioRepository->save($usuario);
     }

@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -5,13 +8,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deliméter - Priorize sua Alimentação</title>
-    <link rel="stylesheet" href="/public/assets/styles/styles.css">
+    <?php
+    try {
+        if (isset($_SESSION['usuario'])) {
+            echo '<link rel="stylesheet" href="/public/assets/styles/' . $_SESSION['usuario']['tipo'] . '.css">';
+        } else {
+            echo '<link rel="stylesheet" href="/public/assets/styles/delimeter.css">';
+        }
+    } catch (Exception $e) {
+        echo "Erro ao incluir o CSS do usuário: " . $e->getMessage();
+        exit(1);
+    }
+    ?>
+    <link rel="stylesheet" href="/public/assets/styles/acessibilidade.css">
 </head>
 
 <body>
-    <?php
-    session_start();
-    ?>
     <header>
         <div class="logo">
             <a href="/"><img src="/public/assets/images/logo.png" alt="Logo Delímiter"></a>
