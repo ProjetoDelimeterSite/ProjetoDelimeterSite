@@ -18,5 +18,14 @@ class UsuarioService {
     public function listar() {
         return $this->usuarioRepository->findAll();
     }
+
+    public function login($email, $senha) {
+        $usuario = $this->usuarioRepository->findByEmail($email);
+        if ($usuario && password_verify($senha, $usuario['senha_usuario'])) {
+            unset($usuario['senha_usuario']); // Remove a senha do array retornado
+            return $usuario;
+        }
+        return false;
+    }
 }
 ?>

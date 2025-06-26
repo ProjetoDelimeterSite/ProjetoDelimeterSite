@@ -71,12 +71,12 @@ class UsuarioController {
         if (!$data) $data = (object)$_POST;
 
         // Verifica se os campos esperados estão presentes
-        if (!isset($data->email) || !isset($data->senha)) {
+        if (!isset($data->email_usuario) || !isset($data->senha_usuario)) {
             echo json_encode(['error' => 'Dados incompletos.']);
             return;
         }
 
-        $usuario = $this->service->login($data->email, $data->senha);
+        $usuario = $this->service->login($data->email_usuario, $data->senha_usuario);
 
         if ($usuario) {
             // Define o tipo do usuário na sessão
