@@ -34,5 +34,13 @@ class DelimeterController {
             echo "Erro: Início não encontrado em $formPath";
         }
     }
+    public function mostrarFormulario(){
+        $formPath = dirname(__DIR__, 2) . '/public/usuario.php';
+        if (file_exists($formPath)) {
+            include_once $formPath;
+        } else {
+            echo "Erro: Formulário não encontrado em $formPath";
+        }
+    }
 }
 ?>

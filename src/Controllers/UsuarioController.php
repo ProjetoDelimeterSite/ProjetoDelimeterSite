@@ -34,7 +34,7 @@ class UsuarioController {
         echo json_encode($usuarios);
     }
     public function mostrarFormulario(){
-        $formPath = dirname(__DIR__, 2) . '/view/delimeter/form.php';
+        $formPath = dirname(__DIR__, 2) . '/view/usuario/form.php';
         if (file_exists($formPath)) {
             include_once $formPath;
         } else {
@@ -42,7 +42,7 @@ class UsuarioController {
         }
     }
     public function mostrarHome(){
-        $formPath = dirname(__DIR__, 2) . '/view/delimeter/index.php';
+        $formPath = dirname(__DIR__, 2) . '/view/usuario/index.php';
         if (file_exists($formPath)) {
             include_once $formPath;
         } else {
