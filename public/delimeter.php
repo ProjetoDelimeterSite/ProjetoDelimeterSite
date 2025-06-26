@@ -7,7 +7,8 @@ $delimeterController = new DelimeterController();
 
 $route->add('GET', '/', [$delimeterController, 'mostrarHome']);
 $route->add('GET', '/delimeter/calculo', [$delimeterController, 'mostrarCalculo']);
-$route->add('GET', '/usuario/cadastro', [$usuarioController, 'mostrarFormulario']);
-// Adicione outras rotas conforme necessário
+if($_SERVER['REQUEST_URI'] === '/usuario/cadastro') {
+    include_once __DIR__ . '/usuario.php';
+}
 
 ?>
