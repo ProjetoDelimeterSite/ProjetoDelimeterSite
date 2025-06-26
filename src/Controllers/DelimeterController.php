@@ -19,7 +19,7 @@ class DelimeterController {
         }
     }
     public function mostrarCalculo(){
-        $formPath = dirname(__DIR__, 2) . '/view/delimeter/calculo.php';
+        $formPath = dirname(__DIR__, 2) . '/view/delimeter/calculoForm.php';
         if (file_exists($formPath)) {
             include_once $formPath;
         } else {
@@ -34,12 +34,12 @@ class DelimeterController {
             echo "Erro: Início não encontrado em $formPath";
         }
     }
-    public function mostrarFormulario(){
-        $formPath = dirname(__DIR__, 2) . '/public/usuario.php';
+    public function mostrarSobre(){
+        $formPath = dirname(__DIR__, 2) . '/view/delimeter/sobre.php';
         if (file_exists($formPath)) {
             include_once $formPath;
         } else {
-            echo "Erro: Formulário não encontrado em $formPath";
+            echo "Erro: Sobre não encontrado em $formPath";
         }
     }
 }

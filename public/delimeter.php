@@ -7,6 +7,8 @@ $delimeterController = new DelimeterController();
 
 $route->add('GET', '/', [$delimeterController, 'mostrarHome']);
 $route->add('GET', '/delimeter/calculo', [$delimeterController, 'mostrarCalculo']);
+$route->add('GET', '/delimeter/sobre', [$delimeterController, 'mostrarSobre']);
+
 if($_SERVER['REQUEST_URI'] === '/usuario/cadastro') {
     include_once __DIR__ . '/usuario.php';
 }

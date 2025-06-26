@@ -26,10 +26,10 @@
             <div class="overlay">
                 <nav>
                     <ul aria-label="Acessibilidade" class="acessibilidade">
-                        <li><a href="about.php" class="link">Sobre Nós</a></li>
-                        <li><a href="calculo_landpage.php" class="link">Cálculo nutricional</a></li>
+                        <li><a href="/delimeter/sobre" class="link">Sobre Nós</a></li>
+                        <li><a href="/delimeter/calculo" class="link">Cálculo nutricional</a></li>
                         <?php if (isset($_SESSION['usuario'])): ?>
-                            <li><a href="conta.php" class="link">Conta</a></li>
+                            <li><a href="/conta" class="link">Conta</a></li>
                         <?php else: ?>
                             <li><a href="/usuario/cadastro" class="link">Cadastrar-se</a></li>
                             <li><a href="entrar_usuario.php" class="link">Login</a></li>
