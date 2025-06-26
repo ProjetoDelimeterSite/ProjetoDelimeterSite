@@ -41,7 +41,19 @@
                         <li><a href="/delimeter/sobre" class="link">Sobre Nós</a></li>
                         <li><a href="/delimeter/calculo" class="link">Cálculo nutricional</a></li>
                         <?php if (isset($_SESSION['usuario'])): ?>
-                            <li><a href="/conta" class="link">Conta</a></li>
+                            <?php if ($_SESSION['usuario']['tipo'] === 'paciente'): ?>
+                                <li><a href="/paciente" class="link">Painel</a></li>
+                                <li><a href="/conta" class="link">Conta</a></li>
+                            <?php elseif ($_SESSION['usuario']['tipo'] === 'nutricionista'): ?>
+                                <li><a href="/nutricionista" class="link">Painel</a></li>
+                                <li><a href="/conta" class="link">Conta</a></li>
+                            <?php elseif ($_SESSION['usuario']['tipo'] === 'medico'): ?>
+                                <li><a href="/medico" class="link">Painel</a></li>
+                                <li><a href="/conta" class="link">Conta</a></li>
+                            <?php else: ?>
+                                <li><a href="/" class="link">Painel</a></li>
+                                <li><a href="/conta" class="link">Conta</a></li>
+                            <?php endif; ?>
                         <?php else: ?>
                             <li><a href="/usuario/cadastro" class="link">Cadastrar-se</a></li>
                             <li><a href="/usuario/login" class="link">Login</a></li>

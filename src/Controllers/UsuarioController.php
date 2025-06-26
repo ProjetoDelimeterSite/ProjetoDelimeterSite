@@ -76,28 +76,70 @@ class UsuarioController {
             return;
         }
 
+        // Tenta login como usuario
         $usuario = $this->service->login($data->email_usuario, $data->senha_usuario);
-
         if ($usuario) {
-            // Define o tipo do usuário na sessão
-            if (is_array($usuario)) {
-                $_SESSION['usuario'] = $usuario;
-                $_SESSION['usuario']['tipo'] = 'usuario';
-            } else {
-                $_SESSION['usuario'] = (array)$usuario;
-                $_SESSION['usuario']['tipo'] = 'usuario';
-            }
-            // Se for requisição POST tradicional (formulário), redireciona para a página inicial
+            $_SESSION['usuario'] = $usuario;
+            $_SESSION['usuario']['tipo'] = 'usuario';
+            $_SESSION['usuario']['id'] = $usuario['id_usuario'] ?? $usuario['id'] ?? null;
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
                 header('Location: /');
                 exit;
             }
-
-            // Caso contrário, retorna JSON (para AJAX)
             echo json_encode(['success' => true, 'usuario' => $_SESSION['usuario']]);
-        } else {
-            echo json_encode(['error' => 'Credenciais inválidas.']);
+            return;
         }
+
+        // Tenta login como paciente
+        $pacienteRepo = new \Htdocs\Src\Models\Repository\PacienteRepository();
+        $paciente = $pacienteRepo->findByEmail($data->email_usuario);
+        if ($paciente && password_verify($data->senha_usuario, $paciente['senha_usuario'])) {
+            unset($paciente['senha_usuario']);
+            $_SESSION['usuario'] = $paciente;
+            $_SESSION['usuario']['tipo'] = 'paciente';
+            $_SESSION['usuario']['id'] = $paciente['id_usuario'] ?? $paciente['id'] ?? null;
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                header('Location: /paciente');
+                exit;
+            }
+            echo json_encode(['success' => true, 'usuario' => $_SESSION['usuario']]);
+            return;
+        }
+
+        // Tenta login como nutricionista
+        $nutriRepo = new \Htdocs\Src\Models\Repository\NutricionistaRepository();
+        $nutri = $nutriRepo->findByEmail($data->email_usuario);
+        if ($nutri && password_verify($data->senha_usuario, $nutri['senha_usuario'])) {
+            unset($nutri['senha_usuario']);
+            $_SESSION['usuario'] = $nutri;
+            $_SESSION['usuario']['tipo'] = 'nutricionista';
+            $_SESSION['usuario']['id'] = $nutri['id_usuario'] ?? $nutri['id'] ?? null;
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                header('Location: /nutricionista');
+                exit;
+            }
+            echo json_encode(['success' => true, 'usuario' => $_SESSION['usuario']]);
+            return;
+        }
+
+        // Tenta login como medico
+        $medicoRepo = new \Htdocs\Src\Models\Repository\MedicoRepository();
+        $medico = $medicoRepo->findByEmail($data->email_usuario);
+        if ($medico && password_verify($data->senha_usuario, $medico['senha_usuario'])) {
+            unset($medico['senha_usuario']);
+            $_SESSION['usuario'] = $medico;
+            $_SESSION['usuario']['tipo'] = 'medico';
+            $_SESSION['usuario']['id'] = $medico['id_usuario'] ?? $medico['id'] ?? null;
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                header('Location: /medico');
+                exit;
+            }
+            echo json_encode(['success' => true, 'usuario' => $_SESSION['usuario']]);
+            return;
+        }
+
+        // Nenhum login válido
+        echo json_encode(['error' => 'Credenciais inválidas.']);
     }
 
     public function mostrarConta() {

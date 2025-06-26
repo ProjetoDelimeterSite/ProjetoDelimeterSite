@@ -1,4 +1,9 @@
 <?php
+include_once __DIR__ . '/delimeter.php';
+include_once __DIR__ . '/usuario.php';
+include_once __DIR__ . '/nutricionista.php';
+include_once __DIR__ . '/medico.php';
+
 
 if ($_SERVER['REQUEST_URI'] === '/delimeter/sobre') {
     include_once __DIR__ . '/delimeter.php';
