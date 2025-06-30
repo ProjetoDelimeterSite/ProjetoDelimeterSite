@@ -101,7 +101,7 @@ O Deliméter é um projeto open-source sob a licença MIT. Sinta-se à vontade p
 
 ## 👥 Contato
 
-- **E-mail**: contato@delimeter.com
+- **E-mail**: ProjetoDelimeterSite@gmail.com
 - **Telefone**: (11) 99999-9999
 - **Endereço**: Av. da Saúde, 1234 - São Paulo, SP
 
