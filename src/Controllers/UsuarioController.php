@@ -92,7 +92,7 @@ class UsuarioController {
             $_SESSION['usuario']['id_usuario'] = $usuario['id_usuario'] ?? $usuario['id'] ?? null;
             // Se for requisição POST tradicional (formulário), redireciona para a página inicial
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-                header('Location: /');
+                header('Location: /delimeter');
                 exit;
             }
 
@@ -150,7 +150,7 @@ class UsuarioController {
             $this->service->getUsuarioRepository()->delete($id);
             session_destroy();
             // Compatível com rota genérica
-            header('Location: /');
+            header('Location: /delimeter');
             exit;
         }
         header('Location: /conta?erro=1');
@@ -160,7 +160,7 @@ class UsuarioController {
     public function sairConta() {
         session_destroy();
         // Compatível com rota genérica
-        header('Location: /');
+        header('Location: /delimeter');
         exit;
     }
 }

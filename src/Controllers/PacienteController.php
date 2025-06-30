@@ -38,7 +38,7 @@ class PacienteController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             $_SESSION['usuario']['tipo'] = 'paciente';
-            header('Location: /');
+            header('Location: /paciente');
             exit;
         }
 
@@ -158,7 +158,7 @@ class PacienteController {
         if ($paciente) {
             echo json_encode($paciente);
             $_SESSION['usuario']['tipo'] = 'paciente';
-            header('Location: /');
+            header('Location: /paciente');
             exit;
         } else {
             header('Location: /paciente/cadastro');

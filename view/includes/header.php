@@ -23,7 +23,7 @@
 <body>
     <header>
         <div class="logo">
-            <a href="/"><img src="/public/assets/images/logo.png" alt="Logo Delímiter"></a>
+            <a href="/delimeter"><img src="/public/assets/images/logo.png" alt="Logo Delímiter"></a>
         </div>
         <div class="menu-hamburguer">
             <input type="checkbox" id="menu-toggle">
