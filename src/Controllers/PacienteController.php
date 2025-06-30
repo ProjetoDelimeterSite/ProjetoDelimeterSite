@@ -50,6 +50,16 @@ class PacienteController {
     }
 
     public function mostrarHome(){
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? $_SESSION['usuario_id'] ?? null;
+        if (!$id_usuario) {
+            header('Location: /usuario/login');
+            exit;
+        }
+        $paciente = $this->service->getPacienteRepository()->findById($id_usuario);
+        if (!$paciente) {
+            header('Location: /paciente/cadastro');
+            exit;
+        }
         $formPath = dirname(__DIR__, 2) . '/view/paciente/index.php';
         if (file_exists($formPath)) {
             include_once $formPath;

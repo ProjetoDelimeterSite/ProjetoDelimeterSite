@@ -1,3 +1,11 @@
+<?php
+if (!isset($_SESSION)) session_start();
+$usuario  = procurarPorID($_SESSION['usuario']['id']) ?? null;
+if (!$usuario) {
+    header('Location: /usuario/login');
+    exit;
+}
+?>
 <div class="usuario-container" style="background: linear-gradient(120deg, #f4f4f4 60%, #e0ffe0 100%); min-height: 100vh;">
     <main class="usuario-main-content" style="max-width: 900px; margin: 0 auto; padding-bottom: 40px;">
         <div class="usuario-header" style="margin-bottom: 40px; background: linear-gradient(90deg, #43a047 70%, #388e3c 100%); box-shadow: 0 4px 16px rgba(67,160,71,0.13); border-radius: 14px;">
