@@ -2,7 +2,7 @@
 namespace Htdocs\Src\Services;
 
 use Htdocs\Src\Models\Repository\NutricionistaRepository;
-use Htdocs\Src\Models\Entity\Usuario;
+use Htdocs\Src\Models\Entity\Nutricionista;
 
 class NutricionistaService {
     private $nutricionistaRepository;
@@ -15,8 +15,8 @@ class NutricionistaService {
         return $this->nutricionistaRepository;
     }
 
-    public function criar(Usuario $usuario) {
-        return $this->nutricionistaRepository->save($usuario);
+    public function criar(Nutricionista $nutricionista) {
+        return $this->nutricionistaRepository->save($nutricionista);
     }
 
     public function listar() {

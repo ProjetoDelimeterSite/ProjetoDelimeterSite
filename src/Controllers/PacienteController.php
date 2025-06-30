@@ -29,7 +29,12 @@ class PacienteController {
             $nis
         );
 
-        $this->service->criar($paciente);
+        $result = $this->service->criar($paciente);
+
+        if (is_array($result) && isset($result['error'])) {
+            echo json_encode(['error' => $result['error']]);
+            return;
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             $_SESSION['usuario']['tipo'] = 'paciente';

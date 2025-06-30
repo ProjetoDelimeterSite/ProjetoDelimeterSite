@@ -23,16 +23,23 @@ class PacienteRepository {
     }
 
     public function save(Paciente $paciente) {
-        $sql = "INSERT INTO paciente (id_usuario, cpf, nis) VALUES (:id_usuario, :cpf, :nis)";
-        $stmt = $this->conn->prepare($sql);
-        $id_usuario = $paciente->getIdUsuario();
-        $cpf = $paciente->getCpf();
-        $nis = $paciente->getNis();
-        $stmt->bindParam(':id_usuario', $id_usuario);
-        $stmt->bindParam(':cpf', $cpf);
-        $stmt->bindParam(':nis', $nis);
-        $stmt->execute();
-        return $this->conn->lastInsertId();
+        try {
+            $sql = "INSERT INTO paciente (id_usuario, cpf, nis) VALUES (:id_usuario, :cpf, :nis)";
+            $stmt = $this->conn->prepare($sql);
+            $id_usuario = $paciente->getIdUsuario();
+            $cpf = $paciente->getCpf();
+            $nis = $paciente->getNis();
+            $stmt->bindParam(':id_usuario', $id_usuario);
+            $stmt->bindParam(':cpf', $cpf);
+            $stmt->bindParam(':nis', $nis);
+            $stmt->execute();
+            return $this->conn->lastInsertId();
+        } catch (\PDOException $e) {
+            if ($e->getCode() == 23000) { // Código de violação de integridade (duplicidade)
+                throw new \Exception("Já existe um paciente cadastrado com este CPF.");
+            }
+            throw $e;
+        }
     }
 
     public function findById($id_usuario) {

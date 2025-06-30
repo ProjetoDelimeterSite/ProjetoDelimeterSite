@@ -2,7 +2,7 @@
 namespace Htdocs\Src\Services;
 
 use Htdocs\Src\Models\Repository\MedicoRepository;
-use Htdocs\Src\Models\Entity\Usuario;
+use Htdocs\Src\Models\Entity\Medico;
 
 class MedicoService {
     private $medicoRepository;
@@ -15,8 +15,8 @@ class MedicoService {
         return $this->medicoRepository;
     }
 
-    public function criar(Usuario $usuario) {
-        return $this->medicoRepository->save($usuario);
+    public function criar(Medico $medico) {
+        return $this->medicoRepository->save($medico);
     }
 
     public function listar() {

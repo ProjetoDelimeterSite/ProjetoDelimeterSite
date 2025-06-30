@@ -16,7 +16,11 @@ class PacienteService {
     }
 
     public function criar(Paciente $paciente) {
-        return $this->pacienteRepository->save($paciente);
+        try {
+            return $this->pacienteRepository->save($paciente);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
 
     public function listar() {
