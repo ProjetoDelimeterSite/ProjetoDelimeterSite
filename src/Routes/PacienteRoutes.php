@@ -12,7 +12,8 @@ class PacienteRoutes {
         $pacienteService = new PacienteService($pacienteRepository);
         $pacienteController = new PacienteController($pacienteService);
 
-        $route->add('GET', '/paciente', [$pacienteController, 'procurarPorID']);
+        // Painel do paciente
+        $route->add('GET', '/paciente', [$pacienteController, 'mostrarHome']);
         $route->add('POST', '/api/paciente', [$pacienteController, 'criar']);
         $route->add('GET', '/paciente/cadastro', [$pacienteController, 'mostrarFormulario']);
         $route->add('POST', '/paciente/conta/atualizar', [$pacienteController, 'atualizarConta']);
