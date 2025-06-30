@@ -51,6 +51,16 @@ class MedicoController {
     }
 
     public function mostrarHome(){
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? $_SESSION['usuario_id'] ?? null;
+        if (!$id_usuario) {
+            header('Location: /usuario/login');
+            exit;
+        }
+        $medico = $this->service->getMedicoRepository()->findById($id_usuario);
+        if (!$medico) {
+            header('Location: /medico/cadastro');
+            exit;
+        }
         $formPath = dirname(__DIR__, 2) . '/view/medico/index.php';
         if (file_exists($formPath)) {
             include_once $formPath;

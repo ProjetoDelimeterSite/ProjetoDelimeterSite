@@ -51,6 +51,16 @@ class NutricionistaController {
         }
     }
     public function mostrarHome(){
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? $_SESSION['usuario_id'] ?? null;
+        if (!$id_usuario) {
+            header('Location: /usuario/login');
+            exit;
+        }
+        $nutricionista = $this->service->getNutricionistaRepository()->findById($id_usuario);
+        if (!$nutricionista) {
+            header('Location: /nutricionista/cadastro');
+            exit;
+        }
         $formPath = dirname(__DIR__, 2) . '/view/nutricionista/index.php';
         if (file_exists($formPath)) {
             include_once $formPath;
