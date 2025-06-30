@@ -13,14 +13,6 @@ class PacienteRepository {
         return $this->conn !== null;
     }
 
-    public function isValid() {
-        return $this->conn !== null;
-    }
-
-    public function isReady() {
-        return $this->isConnected();
-    }
-
     public function __construct() {
         $database = new Connection();
         $this->conn = $database->getConnection();
@@ -31,13 +23,11 @@ class PacienteRepository {
     }
 
     public function save(Paciente $paciente) {
-        $query = "INSERT INTO paciente (id_usuario, cpf, nis) VALUES (:id_usuario, :cpf, :nis)";
-        $stmt = $this->conn->prepare($query);
-
+        $sql = "INSERT INTO paciente (id_usuario, cpf, nis) VALUES (:id_usuario, :cpf, :nis)";
+        $stmt = $this->conn->prepare($sql);
         $id_usuario = $paciente->getIdUsuario();
         $cpf = $paciente->getCpf();
         $nis = $paciente->getNis();
-
         $stmt->bindParam(':id_usuario', $id_usuario);
         $stmt->bindParam(':cpf', $cpf);
         $stmt->bindParam(':nis', $nis);
@@ -45,46 +35,44 @@ class PacienteRepository {
         return $this->conn->lastInsertId();
     }
 
-    // Retorna todos os pacientes cadastrados
-    public function findAll() {
-        $query = "SELECT * FROM paciente";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // Busca um paciente pelo ID
-    public function findById($id) {
-        $query = "SELECT * FROM paciente WHERE id_paciente = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
+    public function findById($id_usuario) {
+        $sql = "SELECT * FROM paciente WHERE id_usuario = :id_usuario";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_usuario', $id_usuario);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Atualiza os dados de um paciente existente
-    public function update(Paciente $paciente) {
-        $query = "UPDATE paciente SET id_usuario = :id_usuario, cpf = :cpf, nis = :nis WHERE id_paciente = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id_usuario', $paciente->getIdUsuario());
-        $stmt->bindParam(':cpf', $paciente->getCpf());
-        $stmt->bindParam(':nis', $paciente->getNis());
-        $stmt->bindParam(':id', $paciente->getIdPaciente());
-        $stmt->execute();
-    }
-
-    // Remove um paciente pelo ID
-    public function delete($id) {
-        $query = "DELETE FROM paciente WHERE id_paciente = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-    }
-
-    public function findByEmail($email) {
-        $sql = "SELECT * FROM paciente WHERE email_usuario = :email";
+    public function findAll() {
+        $sql = "SELECT * FROM paciente";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function update(Paciente $paciente) {
+        $sql = "UPDATE paciente SET cpf = :cpf, nis = :nis WHERE id_usuario = :id_usuario";
+        $stmt = $this->conn->prepare($sql);
+        $id_usuario = $paciente->getIdUsuario();
+        $cpf = $paciente->getCpf();
+        $nis = $paciente->getNis();
+        $stmt->bindParam(':cpf', $cpf);
+        $stmt->bindParam(':nis', $nis);
+        $stmt->bindParam(':id_usuario', $id_usuario);
+        $stmt->execute();
+    }
+
+    public function delete($id_usuario) {
+        $sql = "DELETE FROM paciente WHERE id_usuario = :id_usuario";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_usuario', $id_usuario);
+        $stmt->execute();
+    }
+
+    public function procurarPorID($id_usuario) {
+        $sql = "SELECT * FROM paciente WHERE id_usuario = :id_usuario";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_usuario', $id_usuario);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

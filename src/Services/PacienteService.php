@@ -2,7 +2,7 @@
 namespace Htdocs\Src\Services;
 
 use Htdocs\Src\Models\Repository\PacienteRepository;
-use Htdocs\Src\Models\Entity\Usuario;
+use Htdocs\Src\Models\Entity\Paciente;
 
 class PacienteService {
     private $pacienteRepository;
@@ -15,21 +15,24 @@ class PacienteService {
         return $this->pacienteRepository;
     }
 
-    public function criar(Usuario $usuario) {
-        return $this->pacienteRepository->save($usuario);
+    public function criar(Paciente $paciente) {
+        return $this->pacienteRepository->save($paciente);
     }
 
     public function listar() {
         return $this->pacienteRepository->findAll();
     }
 
-    public function login($email, $senha) {
-        $usuario = $this->pacienteRepository->findByEmail($email);
-        if ($usuario && password_verify($senha, $usuario['senha_usuario'])) {
-            unset($usuario['senha_usuario']);
-            return $usuario;
-        }
-        return false;
+    public function mostrarConta($id_usuario) {
+        return $this->pacienteRepository->findById($id_usuario);
+    }
+
+    public function atualizarConta(Paciente $paciente) {
+        return $this->pacienteRepository->update($paciente);
+    }
+
+    public function deletarConta($id_usuario) {
+        return $this->pacienteRepository->delete($id_usuario);
     }
 }
 ?>

@@ -14,11 +14,28 @@ class NutricionistaController {
         $data = json_decode(file_get_contents("php://input"));
         if (!$data) $data = (object)$_POST;
 
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        $crm = $data->crm_nutricionista ?? null;
+
+        if (!$id_usuario || !$crm) {
+            echo json_encode(['error' => 'Dados incompletos para vincular nutricionista.']);
+            return;
+        }
+
         $nutricionista = new \Htdocs\Src\Models\Entity\Nutricionista(
-            $data->id_usuario,
-            $data->crm_nutricionista
+            $id_usuario,
+            $crm
         );
-        echo json_encode($this->service->criar($nutricionista));
+        $this->service->criar($nutricionista);
+
+        // Redireciona para o painel do nutricionista após o vínculo
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            $_SESSION['usuario']['tipo'] = 'nutricionista';
+            header('Location: /nutricionista');
+            exit;
+        }
+
+        echo json_encode(['success' => true]);
     }
 
     public function listar() {
@@ -51,19 +68,10 @@ class NutricionistaController {
         }
     }
 
-    public function entrar() {
-        $data = json_decode(file_get_contents("php://input"));
-        if (!$data) $data = (object)$_POST;
-
-        $nutricionista = new \Htdocs\Src\Models\Entity\Nutricionista(
-            $data->id_usuario,
-            $data->crm_nutricionista
-        );
-        echo json_encode($this->service->entrar($nutricionista));
-    }
+    // O login do nutricionista é feito via UsuarioController, não precisa duplicar aqui
 
     public function mostrarConta(){
-        $id = $_SESSION['id_usuario'] ?? null;
+        $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
         if ($id) {
             echo json_encode($this->service->mostrarConta($id));
         } else {
@@ -75,25 +83,52 @@ class NutricionistaController {
         $data = json_decode(file_get_contents("php://input"));
         if (!$data) $data = (object)$_POST;
 
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        $crm = $data->crm_nutricionista ?? null;
+
+        if (!$id_usuario || !$crm) {
+            echo json_encode(['error' => 'Dados incompletos para atualizar nutricionista.']);
+            return;
+        }
+
         $nutricionista = new \Htdocs\Src\Models\Entity\Nutricionista(
-            $data->id_usuario,
-            $data->crm_nutricionista
+            $id_usuario,
+            $crm
         );
-        echo json_encode($this->service->atualizarConta($nutricionista));
+        $this->service->atualizarConta($nutricionista);
+
+        // Compatível com rota exclusiva, não redireciona para /conta
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header('Location: /nutricionista/conta/atualizar?sucesso=1');
+            exit;
+        }
+
+        echo json_encode(['success' => true]);
     }
 
     public function deletarConta() {
-        $id = json_decode(file_get_contents("php://input"))->id_usuario ?? null;
+        $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
         if ($id) {
-            echo json_encode($this->service->deletarConta($id));
+            $this->service->deletarConta($id);
+            session_destroy();
+            // Compatível com rota exclusiva, não redireciona para /
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                header('Location: /nutricionista/login');
+                exit;
+            }
+            echo json_encode(['success' => true]);
         } else {
             echo json_encode(["error" => "ID do usuário não fornecido."]);
         }
     }
 
     public function sairConta() {
-        session_start();
         session_destroy();
+        // Compatível com rota exclusiva, não redireciona para /
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header('Location: /nutricionista/login');
+            exit;
+        }
         echo json_encode(["success" => "Usuário deslogado com sucesso."]);
     }
 }

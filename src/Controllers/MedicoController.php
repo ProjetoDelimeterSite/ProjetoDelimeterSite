@@ -14,17 +14,33 @@ class MedicoController {
         $data = json_decode(file_get_contents("php://input"));
         if (!$data) $data = (object)$_POST;
 
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        $crm = $data->crm_medico ?? null;
+
+        if (!$id_usuario || !$crm) {
+            echo json_encode(['error' => 'Dados incompletos para vincular médico.']);
+            return;
+        }
+
         $medico = new \Htdocs\Src\Models\Entity\Medico(
-            $data->id_usuario,
-            $data->crm_medico
+            $id_usuario,
+            $crm
         );
-        echo json_encode($this->service->criar($medico));
+        $this->service->criar($medico);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            $_SESSION['usuario']['tipo'] = 'medico';
+            header('Location: /medico');
+            exit;
+        }
+
+        echo json_encode(['success' => true]);
     }
 
     public function listar() {
         echo json_encode($this->service->listar());
     }
-    
+
     public function mostrarFormulario(){
         $formPath = dirname(__DIR__, 2) . '/view/medico/form.php';
         if (file_exists($formPath)) {
@@ -33,6 +49,7 @@ class MedicoController {
             echo "Erro: Formulário não encontrado em $formPath";
         }
     }
+
     public function mostrarHome(){
         $formPath = dirname(__DIR__, 2) . '/view/medico/index.php';
         if (file_exists($formPath)) {
@@ -41,6 +58,7 @@ class MedicoController {
             echo "Erro: Início não encontrado em $formPath";
         }
     }
+
     public function mostrarLogin(){
         $formPath = dirname(__DIR__, 2) . '/view/medico/login.php';
         if (file_exists($formPath)) {
@@ -49,53 +67,69 @@ class MedicoController {
             echo "Erro: Login não encontrado em $formPath";
         }
     }
-    public function entrar() {
-        $data = json_decode(file_get_contents("php://input"));
-        if (!$data) $data = (object)$_POST;
 
-        $medico = new \Htdocs\Src\Models\Entity\Medico(
-            $data->id_usuario,
-            $data->crm_medico
-        );
-        echo json_encode($this->service->entrar($medico));
-    }
+    // O login do médico é feito via UsuarioController, não precisa duplicar aqui
+
     public function mostrarConta(){
-        $formPath = dirname(__DIR__, 2) . '/view/medico/conta.php';
-        if (file_exists($formPath)) {
-            include_once $formPath;
+        $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        if ($id) {
+            echo json_encode($this->service->mostrarConta($id));
         } else {
-            echo "Erro: Conta não encontrada em $formPath";
+            echo json_encode(["error" => "Usuário não está logado."]);
         }
     }
+
     public function atualizarConta() {
         $data = json_decode(file_get_contents("php://input"));
         if (!$data) $data = (object)$_POST;
 
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        $crm = $data->crm_medico ?? null;
+
+        if (!$id_usuario || !$crm) {
+            echo json_encode(['error' => 'Dados incompletos para atualizar médico.']);
+            return;
+        }
+
         $medico = new \Htdocs\Src\Models\Entity\Medico(
-            $data->id_usuario,
-            $data->crm_medico
+            $id_usuario,
+            $crm
         );
-        echo json_encode($this->service->atualizarConta($medico));
+        $this->service->atualizarConta($medico);
+
+        // Compatível com rota exclusiva, não redireciona para /conta
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header('Location: /medico/conta/atualizar?sucesso=1');
+            exit;
+        }
+
+        echo json_encode(['success' => true]);
     }
+
     public function deletarConta() {
-        $data = json_decode(file_get_contents("php://input"));
-        if (!$data) $data = (object)$_POST;
-
-        $medico = new \Htdocs\Src\Models\Entity\Medico(
-            $data->id_usuario,
-            $data->crm_medico
-        );
-        echo json_encode($this->service->deletarConta($medico));
+        $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        if ($id) {
+            $this->service->deletarConta($id);
+            session_destroy();
+            // Compatível com rota exclusiva, não redireciona para /
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                header('Location: /medico/login');
+                exit;
+            }
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(["error" => "ID do usuário não fornecido."]);
+        }
     }
-    public function sairConta() {
-        $data = json_decode(file_get_contents("php://input"));
-        if (!$data) $data = (object)$_POST;
 
-        $medico = new \Htdocs\Src\Models\Entity\Medico(
-            $data->id_usuario,
-            $data->crm_medico
-        );
-        echo json_encode($this->service->sairConta($medico));
+    public function sairConta() {
+        session_destroy();
+        // Compatível com rota exclusiva, não redireciona para /
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header('Location: /medico/login');
+            exit;
+        }
+        echo json_encode(["success" => "Usuário deslogado com sucesso."]);
     }
 }
 ?>

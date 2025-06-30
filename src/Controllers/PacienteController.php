@@ -11,20 +11,33 @@ class PacienteController {
     }
 
     public function criar() {
-        $data = json_decode(file_get_contents("php://input"));
-        if (!$data) {
-            $data = (object)$_POST;
+        $data = json_decode(file_get_contents("php://input"), true);
+        if (!$data || !is_array($data)) $data = $_POST;
+
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        $cpf = $data['cpf'] ?? $data['cpf_paciente'] ?? null;
+        $nis = $data['nis'] ?? $data['nis_paciente'] ?? null;
+
+        if (!$id_usuario || !$cpf) {
+            echo json_encode(['error' => 'Dados incompletos para vincular paciente.']);
+            return;
         }
 
         $paciente = new \Htdocs\Src\Models\Entity\Paciente(
-            $data->id_usuario,
-            $data->cpf,
-            $data->nis
+            $id_usuario,
+            $cpf,
+            $nis
         );
 
-        echo json_encode(
-            $this->service->criar($paciente)
-        );
+        $this->service->criar($paciente);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            $_SESSION['usuario']['tipo'] = 'paciente';
+            header('Location: /');
+            exit;
+        }
+
+        echo json_encode(['success' => true]);
     }
 
     public function mostrarFormulario(){
@@ -35,6 +48,7 @@ class PacienteController {
             echo "Erro: Formulário não encontrado em $formPath";
         }
     }
+
     public function mostrarHome(){
         $formPath = dirname(__DIR__, 2) . '/view/paciente/index.php';
         if (file_exists($formPath)) {
@@ -43,6 +57,7 @@ class PacienteController {
             echo "Erro: Início não encontrado em $formPath";
         }
     }
+
     public function mostrarLogin(){
         $formPath = dirname(__DIR__, 2) . '/view/paciente/login.php';
         if (file_exists($formPath)) {
@@ -51,68 +66,89 @@ class PacienteController {
             echo "Erro: Login não encontrado em $formPath";
         }
     }
-    public function entrar() {
-        $data = json_decode(file_get_contents("php://input"));
-        if (!$data) {
-            $data = (object)$_POST;
-        }
 
-        $paciente = new \Htdocs\Src\Models\Entity\Paciente(
-            $data->id_usuario,
-            $data->cpf,
-            $data->nis
-        );
-
-        echo json_encode(
-            $this->service->entrar($paciente)
-        );
-    }
     public function mostrarConta(){
-        $id = $_SESSION['id_usuario'] ?? null;
+        $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
         if (!$id) {
-            echo json_encode(["erro" => "Usuário não está logado."]);
+            echo json_encode(["error" => "Usuário não está logado."]);
             return;
         }
-
-        echo json_encode(
-            $this->service->mostrarConta($id)
-        );
+        echo json_encode($this->service->mostrarConta($id));
     }
+
     public function atualizarConta() {
         $data = json_decode(file_get_contents("php://input"));
-        if (!$data) {
-            $data = (object)$_POST;
-        }
+        if (!$data) $data = (object)$_POST;
 
-        $paciente = new \Htdocs\Src\Models\Entity\Paciente(
-            $data->id_usuario,
-            $data->cpf,
-            $data->nis
-        );
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        $cpf = $data->cpf ?? null;
+        $nis = $data->nis ?? null;
 
-        echo json_encode(
-            $this->service->atualizarConta($paciente)
-        );
-    }
-    public function deletarConta() {
-        $id = json_decode(file_get_contents("php://input"))->id_usuario ?? null;
-        if (!$id) {
-            $id = $_POST['id_usuario'] ?? null;
-        }
-
-        if (!$id) {
-            echo json_encode(["erro" => "ID do usuário não fornecido."]);
+        if (!$id_usuario || !$cpf) {
+            echo json_encode(['error' => 'Dados incompletos para atualizar paciente.']);
             return;
         }
 
-        echo json_encode(
-            $this->service->deletarConta($id)
+        $paciente = new \Htdocs\Src\Models\Entity\Paciente(
+            $id_usuario,
+            $cpf,
+            $nis
         );
+
+        $this->service->atualizarConta($paciente);
+
+        // Compatível com rota exclusiva, não redireciona para /conta
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header('Location: /paciente/conta/atualizar?sucesso=1');
+            exit;
+        }
+
+        echo json_encode(['success' => true]);
     }
-    public function sairConta() {
-        // Lógica para encerrar a sessão do paciente
+
+    public function deletarConta() {
+        $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        if (!$id) {
+            echo json_encode(["error" => "ID do usuário não fornecido."]);
+            return;
+        }
+
+        $this->service->deletarConta($id);
         session_destroy();
-        echo json_encode(["sucesso" => "Sessão encerrada."]);
+        // Compatível com rota exclusiva, não redireciona para /
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header('Location: /paciente/login');
+            exit;
+        }
+        echo json_encode(['success' => true]);
+    }
+
+    public function sairConta() {
+        session_destroy();
+        // Compatível com rota exclusiva, não redireciona para /
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header('Location: /paciente/login');
+            exit;
+        }
+        echo json_encode(["success" => "Sessão encerrada."]);
+    }
+
+    public function procurarPorID() {
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
+        if (!$id_usuario) {
+            echo json_encode(['error' => 'Usuário não está logado.']);
+            return;
+        }
+        $paciente = $this->service->getPacienteRepository()->findById($id_usuario);
+        if ($paciente) {
+            echo json_encode($paciente);
+            $_SESSION['usuario']['tipo'] = 'paciente';
+            header('Location: /');
+            exit;
+        } else {
+            header('Location: /paciente/cadastro');
+            exit;
+        }
     }
 }
 ?>

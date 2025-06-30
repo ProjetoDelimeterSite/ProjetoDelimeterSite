@@ -22,14 +22,5 @@ class NutricionistaService {
     public function listar() {
         return $this->nutricionistaRepository->findAll();
     }
-
-    public function login($email, $senha) {
-        $usuario = $this->nutricionistaRepository->findByEmail($email);
-        if ($usuario && password_verify($senha, $usuario['senha_usuario'])) {
-            unset($usuario['senha_usuario']);
-            return $usuario;
-        }
-        return false;
-    }
 }
 ?>
