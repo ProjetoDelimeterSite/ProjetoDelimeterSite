@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS if0_39363106_delimeter;
-USE if0_39363106_delimeter;
+CREATE DATABASE IF NOT EXISTS delimeter;
+USE delimeter;
 CREATE TABLE usuario (
     id_usuario BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome_usuario VARCHAR(255) NOT NULL,
@@ -211,6 +211,3 @@ CREATE TABLE relacao_consulta_medico (
     FOREIGN KEY (id_consulta) REFERENCES consulta(id_consulta),
     FOREIGN KEY (id_medico) REFERENCES medico(id_medico)
 );
-
--- Observação: Para "deletar" um usuário, execute:
--- UPDATE usuario SET status_usuario = 0 WHERE id_usuario = ?;
