@@ -42,7 +42,7 @@ switch ($tipo) {
             <?php elseif (isset($_GET['erro'])): ?>
                 <div style="color:red; margin-bottom:10px;">Erro ao atualizar dados.</div>
             <?php endif; ?>
-            <form action="<?php echo $rotaAtualizar; ?>" method="POST" id="formulario-conta">
+            <form action="/conta/atualizar" method="POST" id="formulario-conta">
                 <input type="hidden" name="tipo_form" value="usuario">
                 <div class="form-group">
                     <label for="nome_usuario">Nome:</label>

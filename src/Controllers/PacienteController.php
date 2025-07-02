@@ -127,7 +127,7 @@ class PacienteController {
 
         // Compatível com rota exclusiva, não redireciona para /conta
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            header('Location: /paciente/conta/atualizar?sucesso=1');
+            header('Location: /conta');
             exit;
         }
 

@@ -125,7 +125,7 @@ class MedicoController {
         $_SESSION['usuario']['crm_medico'] = $crm;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            header('Location: /medico/conta/atualizar?sucesso=1');
+            header('Location: /conta');
             exit;
         }
 

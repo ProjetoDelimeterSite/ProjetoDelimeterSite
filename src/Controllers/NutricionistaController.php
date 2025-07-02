@@ -124,7 +124,7 @@ class NutricionistaController {
         $_SESSION['usuario']['crm_nutricionista'] = $crm;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            header('Location: /nutricionista/conta/atualizar?sucesso=1');
+            header('Location: /conta');
             exit;
         }
 
