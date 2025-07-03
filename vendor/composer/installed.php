@@ -3,7 +3,7 @@
         'name' => 'htdocs/src',
         'pretty_version' => 'dev-frontend',
         'version' => 'dev-frontend',
-        'reference' => '54c45a501a226d9281580e5ea46fe9a8738472ff',
+        'reference' => '53b08feaa376663f3d6e9a900553cc2005642248',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'htdocs/src' => array(
             'pretty_version' => 'dev-frontend',
             'version' => 'dev-frontend',
-            'reference' => '54c45a501a226d9281580e5ea46fe9a8738472ff',
+            'reference' => '53b08feaa376663f3d6e9a900553cc2005642248',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
