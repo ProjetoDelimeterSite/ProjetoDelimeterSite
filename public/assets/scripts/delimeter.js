@@ -6,7 +6,7 @@ function validarFormulario() {
     camposObrigatorios.forEach(campo => {
         if (!campo.value) {
             formularioValido = false;
-            campo.classList.add('erro');
+            highlightInput(campo, true);
             if (!campo.nextElementSibling || !campo.nextElementSibling.classList.contains('mensagem-erro')) {
                 const mensagemErro = document.createElement('span');
                 mensagemErro.classList.add('mensagem-erro');
@@ -14,7 +14,7 @@ function validarFormulario() {
                 campo.parentNode.insertBefore(mensagemErro, campo.nextSibling);
             }
         } else {
-            campo.classList.remove('erro');
+            highlightInput(campo, false);
             if (campo.nextElementSibling && campo.nextElementSibling.classList.contains('mensagem-erro')) {
                 campo.nextElementSibling.remove();
             }
@@ -26,7 +26,8 @@ function validarFormulario() {
 
 function enviarDados() {
     if (!validarFormulario()) {
-        return; // Impede o envio se o formulário não for válido
+        showMessage('Preencha todos os campos obrigatórios.', 'erro');
+        return;
     }
 
     const nome = document.getElementById('nome').value;

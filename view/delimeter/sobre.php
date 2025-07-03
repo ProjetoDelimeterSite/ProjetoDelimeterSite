@@ -1,10 +1,10 @@
-<main>
+<main class="main-content">
     <section class="container-main">
         <div class="container-main-image">
             <img src="/public/assets/images/almoço.jpg" alt="Pessoas em uma mesa distribuindo refeições">
         </div>
     </section>
-    <section class="about">
+    <section class="about container">
         <h1>Sobre</h1>
         <div class="caixas">
             <div class="caixa">
@@ -21,7 +21,7 @@
                     </ul>
                 </p>
             </div>
-            <img src="/public/assets/images/delimeter.png" alt="Deusa delimeter" style="height: 50%;">
+            <img src="/public/assets/images/delimeter.png" alt="Deusa delimeter" class="img-medium">
         </div>
     </section>
 </main>
