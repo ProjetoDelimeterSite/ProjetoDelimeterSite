@@ -161,7 +161,7 @@ class UsuarioController {
             $_SESSION['usuario']['nome_usuario'] = $nome;
             $_SESSION['usuario']['email_usuario'] = $email;
             // Compatível com rota genérica
-            header('Location: /conta');
+            header('Location: /conta?atualizado=1');
             exit;
         }
         header('Location: /conta?erro=1');

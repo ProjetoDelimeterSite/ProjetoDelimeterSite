@@ -5,60 +5,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deliméter - Priorize sua Alimentação</title>
-    <link rel="stylesheet" href="/public/assets/styles/delimeter-modern.css">
-    <script src="/public/assets/scripts/main-modern.js" defer></script>
+    <?php
+    try {
+        if (isset($_SESSION['usuario'])) {
+            echo '<link rel="stylesheet" href="/public/assets/styles/' . $_SESSION['usuario']['tipo'] . '.css">';
+        } else {
+            echo '<link rel="stylesheet" href="/public/assets/styles/delimeter.css">';
+        }
+    } catch (Exception $e) {
+        echo "Erro ao incluir o CSS do usuário: " . $e->getMessage();
+        exit(1);
+    }
+    ?>
+    <link rel="stylesheet" href="/public/assets/styles/acessibilidade.css">
 </head>
 
 <body>
-    <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-        <div class="sidebar-header">
-            <button id="sidebarToggle" class="sidebar-toggle" aria-label="Abrir/fechar menu lateral" tabindex="0">
-                <span class="sidebar-toggle-icon">&#9776;</span>
-            </button>
-            <img src="/public/assets/images/logo.png" alt="Logo Delimeter" class="sidebar-logo" />
-            <span class="sidebar-title">Deliméter</span>
+    <header>
+        <div class="logo">
+            <a href="/delimeter"><img src="/public/assets/images/logo.png" alt="Logo Delímiter"></a>
         </div>
-        <ul class="sidebar-nav" role="menu">
-            <span class="sidebar-icons" style="display: none;">
-                <li><a href="/delimeter/sobre" tabindex="0"><span class="icon">ℹ️</span></a></li>
-                <li><a href="/delimeter/calculo" tabindex="0"><span class="icon">🧮</span></a></li>
-                <?php if (isset($_SESSION['usuario'])): ?>
-                    <?php if ($_SESSION['usuario']['tipo'] === 'paciente'): ?>
-                        <li><a href="/paciente" tabindex="0"><span class="icon">🧑‍🦱</span></a></li>
-                    <?php elseif ($_SESSION['usuario']['tipo'] === 'nutricionista'): ?>
-                        <li><a href="/nutricionista" tabindex="0"><span class="icon">🥗</span></a></li>
-                    <?php elseif ($_SESSION['usuario']['tipo'] === 'medico'): ?>
-                        <li><a href="/medico" tabindex="0"><span class="icon">🩺</span></a></li>
-                    <?php endif; ?>
-                    <li><a href="/conta" tabindex="0"><span class="icon">👤</span></a></li>
-                    <li><a href="/usuario" tabindex="0"><span class="icon">🏠</span></a></li>
-                <?php else: ?>
-                    <li><a href="/usuario/cadastro" tabindex="0"><span class="icon">📝</span></a></li>
-                    <li><a href="/usuario/login" tabindex="0"><span class="icon">🔑</span></a></li>
-                <?php endif; ?>
-            </span>
-            <li><a href="/delimeter/sobre" tabindex="0"><span class="icon">ℹ️</span> Sobre Nós</a></li>
-            <li><a href="/delimeter/calculo" tabindex="0"><span class="icon">🧮</span> Cálculo Nutricional</a></li>
-            <?php if (isset($_SESSION['usuario'])): ?>
-                <?php if ($_SESSION['usuario']['tipo'] === 'paciente'): ?>
-                    <li><a href="/paciente" tabindex="0"><span class="icon">🧑‍🦱</span> Painel Paciente</a></li>
-                <?php elseif ($_SESSION['usuario']['tipo'] === 'nutricionista'): ?>
-                    <li><a href="/nutricionista" tabindex="0"><span class="icon">🥗</span> Painel Nutricionista</a></li>
-                <?php elseif ($_SESSION['usuario']['tipo'] === 'medico'): ?>
-                    <li><a href="/medico" tabindex="0"><span class="icon">🩺</span> Painel Médico</a></li>
-                <?php endif; ?>
-                <li><a href="/conta" tabindex="0"><span class="icon">👤</span> Conta</a></li>
-                <li><a href="/usuario" tabindex="0"><span class="icon">🏠</span> Home</a></li>
-            <?php else: ?>
-                <li><a href="/usuario/cadastro" tabindex="0"><span class="icon">📝</span> Cadastrar-se</a></li>
-                <li><a href="/usuario/login" tabindex="0"><span class="icon">🔑</span> Login</a></li>
-            <?php endif; ?>
-        </ul>
-        <div class="sidebar-footer">
-            <button onclick="aumentarFonte()" aria-label="Aumentar fonte" tabindex="0">A+</button>
-            <button onclick="diminuirFonte()" aria-label="Diminuir fonte" tabindex="0">A-</button>
-            <button onclick="toggleContraste()" id="contraste-btn" aria-pressed="false" aria-label="Alto Contraste" tabindex="0">Contraste</button>
-            <button onclick="resetarAcessibilidade()" aria-label="Restaurar acessibilidade" tabindex="0">Normal</button>
+        <div class="menu-hamburguer">
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon">
+                <div class="linha"></div>
+                <div class="linha"></div>
+                <div class="linha"></div>
+            </label>
+            <div class="overlay">
+                <nav>
+                    <ul aria-label="Acessibilidade" class="acessibilidade">
+                        <li><a href="/delimeter/sobre" class="link">Sobre Nós</a></li>
+                        <li><a href="/delimeter/calculo" class="link">Cálculo nutricional</a></li>
+                        <?php if (isset($_SESSION['usuario'])): ?>
+                            <?php if ($_SESSION['usuario']['tipo'] === 'paciente'): ?>
+                                <li><a href="/paciente" class="link">Painel</a></li>
+                            <?php elseif ($_SESSION['usuario']['tipo'] === 'nutricionista'): ?>
+                                <li><a href="/nutricionista" class="link">Painel</a></li>
+                            <?php elseif ($_SESSION['usuario']['tipo'] === 'medico'): ?>
+                                <li><a href="/medico" class="link">Painel</a></li>
+                            <?php endif; ?>
+                            <li><a href="/conta" class="link">Conta</a></li>
+                            <li><a href="/usuario" class="link">Home</a></li>
+                        <?php else: ?>
+                            <li><a href="/usuario/cadastro" class="link">Cadastrar-se</a></li>
+                            <li><a href="/usuario/login" class="link">Login</a></li>
+                        <?php endif; ?>
+                        <li><p>Modificar tamanho da fonte</p></li>
+                        <li><button onclick="aumentarFonte()" id="aumentar-fonte-btn" aria-label="Aumentar tamanho da fonte" accesskey="2" tabindex="2">A+</button></li>
+                        <li><button onclick="diminuirFonte()" id="diminuir-fonte-btn" aria-label="Diminuir tamanho da fonte" accesskey="3" tabindex="3">A-</button></li>
+                        <li><p>Modificar estilo da exibição</p></li>
+                        <li><button onclick="toggleContraste()" id="contraste-btn" aria-pressed="false" aria-label="Ativar ou desativar alto contraste">Alto Contraste</button></li>
+                        <li><button onclick="toggleDaltonismo('protanopia')" aria-label="Simular protanopia">Protanopia</button></li>
+                        <li><button onclick="toggleDaltonismo('deuteranopia')" aria-label="Simular deuteranopia">Deuteranopia</button></li>
+                        <li><button onclick="toggleDaltonismo('tritanopia')" aria-label="Simular tritanopia">Tritanopia</button></li>
+                        <button onclick="resetarAcessibilidade()" aria-label="Restaurar configurações de acessibilidade">Voltar ao normal</button>
+                    </ul>
+                </nav>
+            </div>
         </div>
-    </nav>
-    <div id="main-wrapper" class="main-wrapper">
+    </header>

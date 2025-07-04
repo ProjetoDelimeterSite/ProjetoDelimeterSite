@@ -493,14 +493,3 @@ footer p {
     border-radius: 8px; /* Opcional: Adiciona bordas arredondadas */
     margin: 10px; /* Espaçamento entre as imagens */
     }
-
-/* Mostrar só os ícones quando o menu estiver fechado */
-.sidebar:not(.open):not(.collapsed) .sidebar-icons {
-    display: flex !important;
-    flex-direction: column;
-    gap: 10px;
-}
-.sidebar.open .sidebar-icons,
-.sidebar.collapsed .sidebar-icons {
-    display: none !important;
-}

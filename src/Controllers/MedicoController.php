@@ -39,8 +39,6 @@ class MedicoController {
         // LOGIN AUTOMÁTICO APÓS CADASTRO
         $_SESSION['usuario']['tipo'] = 'medico';
         $_SESSION['usuario']['crm_medico'] = $crm;
-        $_SESSION['usuario']['cpf'] = $cpf;
-
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             header('Location: /medico');
@@ -125,7 +123,7 @@ class MedicoController {
         $_SESSION['usuario']['crm_medico'] = $crm;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            header('Location: /conta');
+            header('Location: /medico/conta/atualizar?sucesso=1');
             exit;
         }
 
@@ -136,10 +134,10 @@ class MedicoController {
         $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
         if ($id) {
             $this->service->deletarConta($id);
-            $_SESSION['usuario']['tipo'] = 'usuario'; // Redefine tipo para usuário padrão
+            session_destroy();
             // Compatível com rota exclusiva, não redireciona para /
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-                header('Location: /usuario');
+                header('Location: /medico/login');
                 exit;
             }
             echo json_encode(['success' => true]);

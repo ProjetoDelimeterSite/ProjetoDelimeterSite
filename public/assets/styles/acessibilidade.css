@@ -7,12 +7,6 @@
     outline: none !important;
 }
 
-.alto-contraste .sidebar, .alto-contraste .main-wrapper, .alto-contraste .container, .alto-contraste .form-card {
-    background-color: #000 !important;
-    color: #FFD700 !important;
-    border-color: #FFD700 !important;
-}
-
 .alto-contraste a,
 .alto-contraste a:visited,
 .alto-contraste a:active {

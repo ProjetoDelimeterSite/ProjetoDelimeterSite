@@ -42,13 +42,3 @@ function resetarAcessibilidade() {
     const btn = document.getElementById('contraste-btn');
     if (btn) btn.setAttribute('aria-pressed', 'false');
 }
-
-// Foco visível para navegação por teclado
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') {
-        document.body.classList.add('usando-teclado');
-    }
-});
-document.addEventListener('mousedown', function() {
-    document.body.classList.remove('usando-teclado');
-});

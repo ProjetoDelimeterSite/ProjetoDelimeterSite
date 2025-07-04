@@ -5,51 +5,53 @@ if ($usuario) {
     header('Location: /'. $_SESSION['usuario']['tipo'] .'');
     exit;
 }
-?>
-<main class="main-content">
-    <section class="container-main">
-        <div class="container-main-image" style="position:relative;">
-            <img src="/public/assets/images/pexels-fauxels-3184195.jpg" alt="Alimentação saudável" style="width:100%; border-radius:var(--radius); box-shadow:var(--shadow);">
-            <h1 style="position:absolute; bottom:24px; left:24px; color:#fff; background:rgba(67,160,71,0.8); padding:10px 24px; border-radius:var(--radius); font-size:2.2rem;">PRIORIZAMOS A SUA ALIMENTAÇÃO</h1>
-        </div>
-        <div class="caixas" style="display:flex; gap:24px; flex-wrap:wrap; margin-top:32px;">
-            <div class="form-card" style="flex:1; min-width:220px;">
-                <h2>Bem-vindo ao Delimeter</h2>
-                <p>Plataforma inteligente para saúde nutricional, conectando você a profissionais e recursos confiáveis.</p>
+?>  
+    <main>
+        <section class="container-main">
+            <div class="container-main-image">
+                <img src="/public/assets/images/pexels-fauxels-3184195.jpg" alt="Alimentação saudável">
+                <h1>PRIORIZAMOS A SUA ALIMENTAÇÃO</h1>
             </div>
-            <div class="form-card" style="flex:1; min-width:220px;">
-                <img src="/public/assets/images/persefone-feliz.png" alt="Assistente Virtual Perséfone" class="img-small" style="width:48px;">
-                <p>Conte com a Perséfone, nossa assistente virtual, para dicas e cálculos personalizados.</p>
+            <div class="caixas">
+                <div class="caixaAlfa caixaRelativa">
+                    <h2>Sobre o Delímiter</h2>
+                    <p>Uma plataforma nova voltada à alimentação</p>
+                    <a href="about.php" class="link">Saiba mais</a>
+                </div>
+                <div class="caixaAlfa caixaRelativa">
+                    <h2>Dados métricos</h2>
+                    <p>Calcule o seu gasto energético basal</p>
+                    <a href="calculo_landpage.php" class="link">Saiba mais</a>
+                </div>
             </div>
-            <div class="form-card" style="flex:1; min-width:220px;">
-                <img src="/public/assets/images/nutricionista.jpg" alt="Nutricionista" class="img-small" style="width:48px;">
-                <p>Encontre nutricionistas e médicos parceiros para acompanhamento completo.</p>
+            <div class="parceiros">
+                <h2>PARCERIAS</h2>
+                <p>Conheça nossos parceiros</p>
+                <div class="logos">
+                    <a href="#"><img src="/public/assets/images/sus.jpeg" alt="SUS" class="caixaRelativa"></a>
+                    <a href="#"><img src="/public/assets/images/crn3.jpeg" alt="CRN3" class="caixaRelativa"></a>
+                    <a href="#"><img src="/public/assets/images/cremesp.jpeg" alt="CREMESP" class="caixaRelativa"></a>
+                </div>
             </div>
-        </div>
-        <div class="parceiros logos" style="display:flex; gap:24px; justify-content:center; margin:32px 0;">
-            <img src="/public/assets/images/sus.jpeg" alt="SUS" style="height:48px;">
-            <img src="/public/assets/images/crn3.png" alt="CRN3" style="height:48px;">
-            <img src="/public/assets/images/cremesp.png" alt="CREMESP" style="height:48px;">
-        </div>
-    </section>
-    <section class="funcionalidades">
-        <h2 style="color:var(--primary); font-size:1.5rem;">FUNCIONALIDADES</h2>
-        <div class="caixas" style="display:flex; gap:24px; flex-wrap:wrap;">
-            <div class="form-card" style="flex:1; min-width:220px;">
-                <img src="/public/assets/images/almoço.jpg" alt="Cálculo Nutricional" style="width:48px; border-radius:50%;">
-                <h3>Cálculo Nutricional</h3>
-                <p>Calcule seu IMC, necessidades energéticas e distribuição de macronutrientes de forma simples e rápida.</p>
+        </section>
+        <section class="funcionalidades">
+            <h2>FUNCIONALIDADES</h2>
+            <div class="caixas">
+                <div class="caixa">
+                    <a href="#"><img src="/public/assets/images/nutricionista.jpg" alt="Nutricionista" class="caixaRelativa"></a>
+                    <h3>Marque uma consulta com uma nutricionista</h3>
+                    <p>Para acompanhar sua alimentação.</p>
+                </div>
+                <div class="caixa">
+                    <a href="#"><img src="/public/assets/images/dieta.jpg" alt="Dieta" class="caixaRelativa"></a>
+                    <h3>Dietas focadas no seu perfil</h3>
+                    <p>Através do mapeamento de dados.</p>
+                </div>
+                <div class="caixa">
+                    <a href="#"><img src="/public/assets/images/crianca.jpg" alt="Criança" class="caixaRelativa"></a>
+                    <h3>Plano alimentar junto ao cadúnico</h3>
+                    <p>Associar famílias de baixa renda a fornecedores de alimentos.</p>
+                </div>
             </div>
-            <div class="form-card" style="flex:1; min-width:220px;">
-                <img src="/public/assets/images/persefone-feliz.png" alt="Assistente Virtual" style="width:48px; border-radius:50%;">
-                <h3>Assistente Virtual</h3>
-                <p>Receba orientações automáticas e dicas de saúde com a Perséfone, nossa IA exclusiva.</p>
-            </div>
-            <div class="form-card" style="flex:1; min-width:220px;">
-                <img src="/public/assets/images/nutricionista.jpg" alt="Profissionais" style="width:48px; border-radius:50%;">
-                <h3>Profissionais Parceiros</h3>
-                <p>Conecte-se a nutricionistas e médicos para acompanhamento personalizado.</p>
-            </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
