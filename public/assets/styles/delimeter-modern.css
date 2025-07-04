@@ -9,14 +9,14 @@
     --accent: #1976d2;
     --radius: 14px;
     --shadow: 0 2px 12px #0001;
-    --transition: .3s cubic-bezier(.4,0,.2,1);
     --sidebar-width: 260px;
     --sidebar-collapsed: 64px;
-    --sidebar-bg: #fff;
-    --sidebar-border: #eee;
-    --sidebar-active: #e8f5e9;
-    --sidebar-icon: #43a047;
-    --sidebar-hover: #f1f8e9;
+    --sidebar-bg: #23272f; /* Teams dark sidebar */
+    --sidebar-border: #222c37;
+    --sidebar-active: #31394b;
+    --sidebar-icon: #fff;
+    --sidebar-hover: #2d3542;
+    --sidebar-text: #fff;
     --footer-bg: #fff;
     --footer-border: #eee;
 }
@@ -40,6 +40,7 @@ html, body {
   margin-left: var(--sidebar-width);
   transition: margin-left var(--transition);
   min-height: 100vh;
+  background: var(--background);
 }
 .main-wrapper.collapsed {
   margin-left: var(--sidebar-collapsed);
@@ -77,12 +78,13 @@ html, body {
   height: 38px;
   border-radius: 50%;
   background: var(--sidebar-active);
+  border: 2px solid #fff;
   object-fit: cover;
 }
 .sidebar-title {
   font-size: 1.3rem;
-  font-weight: bold;
-  color: var(--primary);
+  font-weight: 600;
+  color: #fff;
   letter-spacing: 1px;
   transition: opacity var(--transition);
 }
@@ -94,13 +96,13 @@ html, body {
   background: none;
   border: none;
   font-size: 2rem;
-  color: var(--sidebar-icon);
+  color: #8ab4f8;
   cursor: pointer;
   margin-right: 8px;
   transition: color var(--transition);
 }
 .sidebar-toggle:focus {
-  outline: 2px solid var(--accent);
+  outline: 2px solid #8ab4f8;
 }
 .sidebar-nav {
   list-style: none;
@@ -117,23 +119,33 @@ html, body {
 .sidebar-nav a {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 24px;
-  color: var(--text);
+  gap: 18px;
+  padding: 16px 28px;
+  color: var(--sidebar-text);
   text-decoration: none;
-  font-size: 1.08rem;
+  font-size: 1.13rem;
   border-radius: 0 var(--radius) var(--radius) 0;
-  transition: background var(--transition), color var(--transition);
+  background: transparent;
+  transition: background 0.18s, color 0.18s;
+  font-weight: 500;
+  outline: none;
 }
 .sidebar-nav a .icon {
-  font-size: 1.3em;
-  color: var(--sidebar-icon);
-  min-width: 28px;
+  font-size: 1.6em;
+  color: #8ab4f8;
+  min-width: 32px;
   text-align: center;
 }
-.sidebar-nav a:hover, .sidebar-nav a:focus {
+.sidebar-nav a .sidebar-text {
+  color: var(--sidebar-text);
+  font-size: 1.08em;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.sidebar-nav a:hover,
+.sidebar-nav a:focus {
   background: var(--sidebar-hover);
-  color: var(--primary);
+  color: #8ab4f8;
 }
 .sidebar-footer {
   display: flex;
@@ -143,26 +155,38 @@ html, body {
   background: var(--sidebar-bg);
 }
 .sidebar-footer button {
-  background: var(--secondary);
-  color: #fff;
+  background: #31394b;
+  color: #8ab4f8;
   border: none;
   border-radius: var(--radius);
-  padding: 6px 12px;
+  padding: 8px 14px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background var(--transition), color var(--transition);
+  transition: background 0.2s, color 0.2s;
+  margin-bottom: 4px;
 }
+.sidebar-footer button:hover,
 .sidebar-footer button:focus {
-  outline: 2px solid var(--accent);
+  background: #8ab4f8;
+  color: #23272f;
 }
 .sidebar.collapsed .sidebar-title,
 .sidebar.collapsed .sidebar-footer,
-.sidebar.collapsed .sidebar-nav a span:not(.icon) {
+.sidebar.collapsed .sidebar-nav a .sidebar-text {
   display: none;
 }
 .sidebar.collapsed .sidebar-nav a {
   justify-content: center;
-  padding: 14px 0;
+  padding: 16px 0;
+}
+.sidebar-icons {
+    display: flex !important;
+    flex-direction: column;
+    gap: 10px;
+}
+.sidebar.open .sidebar-icons,
+.sidebar.collapsed .sidebar-icons {
+    display: none !important;
 }
 @media (max-width: 900px) {
     .main-wrapper {
@@ -417,13 +441,22 @@ html, body {
 }
 ::-webkit-scrollbar {
     width: 8px;
-    background: #eee;
+    background: #23272f;
 }
 ::-webkit-scrollbar-thumb {
-    background: #c8e6c9;
+    background: #8ab4f8;
     border-radius: 8px;
 }
 :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+}
+.protanopia {
+    filter: grayscale(0.3) contrast(1.2) sepia(0.7) hue-rotate(-30deg) !important;
+}
+.deuteranopia {
+    filter: grayscale(0.3) contrast(1.2) sepia(0.7) hue-rotate(30deg) !important;
+}
+.tritanopia {
+    filter: grayscale(0.3) contrast(1.2) sepia(0.7) hue-rotate(90deg) !important;
 }

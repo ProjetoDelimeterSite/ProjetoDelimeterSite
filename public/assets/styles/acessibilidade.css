@@ -98,3 +98,7 @@
 .protanopia { --hue-rotate: -30deg; }
 .deuteranopia { --hue-rotate: 30deg; }
 .tritanopia { --hue-rotate: 90deg; }
+
+.sidebar-footer button {
+    margin-bottom: 2px;
+}

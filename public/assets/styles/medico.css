@@ -18,75 +18,6 @@ header {
 
 /* Estilos do menu */
 
-.menu-hamburguer{
-    position: fixed;
-    top: 40px;
-    right: 40px;
-    z-index: 1000;
-}
-
-
-
-#menu-toggle{
-    display: none;
-}
-
-.menu-icon{
-    position: relative;
-    z-index: 10001;
-    width: 35px;
-    height: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    margin-left: auto;  /* Empurra o ícone para a direita */
-    margin-right: 0;    /* Remove qualquer margem direita */
-}
-
-#menu-toggle:checked + .menu-icon .linha:nth-child(1){
-    transform: rotate(45deg) translate(13px, 13px);
-}
-#menu-toggle:checked + .menu-icon .linha:nth-child(2){
-    opacity: 0;
-}
-#menu-toggle:checked + .menu-icon .linha:nth-child(3){
-    transform: rotate(-45deg) translate(5px, -5px);
-}
-#menu-toggle:checked ~ .overlay{
-    transform: scale(1);
-}
-
-.linha{
-    height: 4px;
-    background-color: #26a65b;
-    border: solid 0.5px white;
-    border-radius: 2px;
-    transition: 0.3s;
-    z-index: 999;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #fff;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 998;
-    padding-top: 80px;
-}
-
-.overlay img:target{
-    position: fixed;
-    width: 50px;
-    border: solid 1px #333;
-}
-
-
 nav {
     display: flex;
 }
@@ -175,16 +106,6 @@ nav p {
     .logo img {
         width: 80px; /* Reduz o tamanho para telas menores */
         height: 80px; /* Mantenha o mesmo valor que a largura para ficar quadrado */
-    }
-
-    .overlay {
-        width: 180px;
-        top: 80px;
-        height: auto;
-        border-radius: 8px 0 0 8px;
-        padding: 20px 0;
-        background-color: #f8f8f8;
-        border: 1px solid #e0e0e0;
     }
 
     nav ul {
