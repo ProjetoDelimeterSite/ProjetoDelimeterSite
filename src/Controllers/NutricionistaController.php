@@ -39,7 +39,6 @@ class NutricionistaController {
         // LOGIN AUTOMÁTICO APÓS CADASTRO
         $_SESSION['usuario']['tipo'] = 'nutricionista';
         $_SESSION['usuario']['crm_nutricionista'] = $crm;
-        $_SESSION['usuario']['cpf'] = $cpf;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             header('Location: /nutricionista');
@@ -124,7 +123,7 @@ class NutricionistaController {
         $_SESSION['usuario']['crm_nutricionista'] = $crm;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            header('Location: /conta');
+            header('Location: /nutricionista/conta/atualizar?sucesso=1');
             exit;
         }
 
@@ -135,10 +134,10 @@ class NutricionistaController {
         $id = $_SESSION['usuario']['id_usuario'] ?? $_SESSION['usuario']['id'] ?? null;
         if ($id) {
             $this->service->deletarConta($id);
-            $_SESSION['usuario']['tipo'] = 'usuario'; // Redefine tipo para usuário padrão
+            session_destroy();
             // Compatível com rota exclusiva, não redireciona para /
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-                header('Location: /usuario');
+                header('Location: /nutricionista/login');
                 exit;
             }
             echo json_encode(['success' => true]);

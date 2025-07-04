@@ -26,12 +26,16 @@ Ideal para quem quer cuidar da saúde, acompanhar dados e ter controle sobre sua
 
 ## 🖥️ Tecnologias
 
-- **PHP** (MVC simples)
-- **HTML5 + CSS3** (com muito carinho no visual)
+- **React** (SPA moderna)
+- **TypeScript** (opcional, recomendado)
+- **HTML5 + CSS3** (componentizado)
 - **JavaScript** (interatividade e acessibilidade)
-- **MySQL** (armazenamento dos dados)
+- **React Router** (navegação)
 - **SweetAlert2** (alertas bonitos)
-- **PDO** (acesso seguro ao banco)
+- **Axios** (requisições HTTP)
+- **Node.js/Express** (backend, opcional)
+- **MySQL** (armazenamento dos dados, opcional)
+- **Context API** (gerenciamento de estado global)
 
 ---
 
@@ -40,42 +44,47 @@ Ideal para quem quer cuidar da saúde, acompanhar dados e ter controle sobre sua
 ```
 .
 ├── README.md
-├── index.php
-├── sobre.php
-├── contato.php
-├── cadastro.php
-├── login.php
-├── painel.php
-├── perfil.php
-├── historico.php
-├── servicos.php
-├── imc.php
-├── macros.php
-├── daltonismo.php
-├── acesso_negado.php
-├── assets
-│   ├── css
-│   │   ├── estilo.css
-│   │   └── responsivo.css
-│   ├── js
-│   │   ├── scripts.js
-│   │   └── validacao.js
-│   └── img
-│       ├── logo.png
-│       ├── usuario_padrao.png
-│       └── icones
-│           ├── home.svg
-│           ├── perfil.svg
-│           ├── historico.svg
-│           ├── servicos.svg
-│           ├── imc.svg
-│           └── macros.svg
-├── includes
-│   ├── cabecalho.php
-│   ├── rodape.php
-│   ├── conexao.php
-│   ├── funcoes.php
-│   └── autenticar.php
+├── package.json
+├── public
+│   ├── index.html
+│   └── assets
+│       ├── images
+│       └── styles
+├── src
+│   ├── App.jsx
+│   ├── index.jsx
+│   ├── components
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   ├── Sidebar.jsx
+│   │   └── ...outros componentes
+│   ├── pages
+│   │   ├── Home.jsx
+│   │   ├── Sobre.jsx
+│   │   ├── Calculo.jsx
+│   │   ├── Usuario
+│   │   │   ├── Login.jsx
+│   │   │   ├── Cadastro.jsx
+│   │   │   ├── Conta.jsx
+│   │   │   └── ...outros
+│   │   ├── Paciente
+│   │   │   ├── Index.jsx
+│   │   │   ├── Form.jsx
+│   │   │   └── ...outros
+│   │   ├── Nutricionista
+│   │   │   ├── Index.jsx
+│   │   │   ├── Form.jsx
+│   │   │   └── ...outros
+│   │   ├── Medico
+│   │   │   ├── Index.jsx
+│   │   │   ├── Form.jsx
+│   │   │   └── ...outros
+│   ├── hooks
+│   ├── context
+│   ├── utils
+│   └── assets
+│       ├── images
+│       └── styles
 └── docs
     ├── termos_de_uso.md
     └── politica_de_privacidade.md
@@ -127,15 +136,6 @@ Agradecemos a todos que contribuíram para o desenvolvimento do Deliméter, espe
 - [ ] Implementar feedback dos usuários
 - [ ] Adicionar novas funcionalidades
 - [ ] Melhorar a performance e segurança
-
----
-
-## 📊 Estatísticas do Projeto
-
-- **Linhas de código**: ~10.000
-- **Commits**: 150
-- **Contribuidores**: 10
-- **Issues abertas**: 5
 
 ---
 
